@@ -1,0 +1,28 @@
+extends layout
+
+block content
+	.container
+		.row
+			.col-sm-9.col-md-7.col-lg-5.mx-auto
+				.card.card-signin.my-5
+					.card-body
+						h5.card-title.text-center Sign In
+						form.form-signin(method='post')
+							.form-label-group
+								input#inputEmail.form-control(type='email', placeholder='Email address', required='', autofocus='')
+								label(for='inputEmail') Email address
+							.form-label-group
+								input#inputPassword.form-control(type='password', placeholder='Password', required='')
+								label(for='inputPassword') Password
+							.custom-control.custom-checkbox.mb-3
+								input#customCheck1.custom-control-input(type='checkbox')
+								label.custom-control-label(for='customCheck1') Remember password
+							button.btn.btn-lg.btn-success.btn-block.text-uppercase(type='submit') Sign in
+							a.btn.btn-lg.btn-primary.btn-block.text-uppercase(href='/auth/register') Sign Up
+							hr.my-4
+							button.btn.btn-lg.btn-google.btn-block.text-uppercase(type='submit')
+								i.fab.fa-google.mr-2
+								|  Sign in with Google
+							button.btn.btn-lg.btn-facebook.btn-block.text-uppercase(type='submit')
+								i.fab.fa-facebook-f.mr-2
+								|  Sign in with Facebook

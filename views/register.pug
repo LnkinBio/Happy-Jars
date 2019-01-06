@@ -1,0 +1,33 @@
+extends layout
+
+block content
+	.container
+		.row
+			.col-sm-9.col-md-7.col-lg-5.mx-auto
+				.card.card-signin.my-5
+					.card-body
+						h5.card-title.text-center Sign Up
+						form.form-signin(method='post')
+							.form-label-group
+								input#inputEmail.form-control(type='text', placeholder='John Doe', required='', autofocus='', name='name')
+								label(for='inputEmail') Full Name
+							.form-label-group
+								input#inputEmail.form-control(type='text', placeholder='john', required='', autofocus='', name='username')
+								label(for='inputEmail') Username
+							.form-label-group
+								input#inputEmail.form-control(type='email', placeholder='Email address', required='', autofocus='', name='email')
+								label(for='inputEmail') Email address
+							.form-label-group
+								input#inputPassword.form-control(type='password', placeholder='Password', required='', name='password')
+								label(for='inputPassword') Password
+							.form-label-group
+								input#inputPassword.form-control(type='password', placeholder='Confirm Password', required='', name='password2')
+								label(for='inputPassword') Confirm Password
+							button.btn.btn-lg.btn-success.btn-block.text-uppercase(type='submit') Sign Up!
+							hr.my-4
+							button.btn.btn-lg.btn-google.btn-block.text-uppercase(type='submit')
+								i.fab.fa-google.mr-2
+								|  Sign Up with Google
+							button.btn.btn-lg.btn-facebook.btn-block.text-uppercase(type='submit')
+								i.fab.fa-facebook-f.mr-2
+								|  Sign Up with Facebook

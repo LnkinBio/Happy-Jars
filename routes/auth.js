@@ -1,0 +1,135 @@
+var express = require('express');
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var router = express.Router();
+
+/* Models */
+
+var User = require('../models/user');
+
+
+/* Passport local auth strategy */
+
+passport.use(new LocalStrategy(
+  function(username, password, done) {
+    User.getUserByUsername(username, function(err, user){
+   	  if(err) throw err;
+   	  if(!user){
+   		   return done(null, false, {message: 'Unknown User'});
+   	  }
+
+     	User.comparePassword(password, user.password, function(err, isMatch){
+     		if(err) throw err;
+     		if(isMatch){
+     			return done(null, user);
+     		} else {
+     			return done(null, false, {message: 'Invalid password'});
+     		}
+     	});
+   });
+  }
+));
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.getUserById(id, function(err, user) {
+    done(err, user);
+  });
+});passport.use(new LocalStrategy(
+  function(username, password, done) {
+    User.getUserByUsername(username, function(err, user){
+   	  if(err) throw err;
+   	  if(!user){
+   		   return done(null, false, {message: 'Unknown User'});
+   	  }
+
+     	User.comparePassword(password, user.password, function(err, isMatch){
+     		if(err) throw err;
+     		if(isMatch){
+     			return done(null, user);
+     		} else {
+     			return done(null, false, {message: 'Invalid password'});
+     		}
+     	});
+   });
+  }
+));
+
+passport.serializeUser(function(user, done) {
+  done(null, user.id);
+});
+
+passport.deserializeUser(function(id, done) {
+  User.getUserById(id, function(err, user) {
+    done(err, user);
+  });
+});
+
+
+/* Default route, when person tries to open localhost/auth/ 
+it'll redirect to /auth/login and /auth is invalid route. */
+
+router.get('/', function(req, res, next) {
+	res.redirect("/auth/login")
+    next
+});
+
+
+/* Display registeration page */
+
+router.get('/register', function(req, res, next) {
+	res.render('register', {title: '.:: Register - Happy Jars ::.' })
+});
+
+
+/* Post Register Data */
+router.post('/register', function(req, res, next){
+  var password = req.body.password;
+  var password2 = req.body.password2;
+
+  if (password == password2){
+    var newUser = new User({
+      name: req.body.name,
+      email: req.body.email,
+      username: req.body.username,
+      password: req.body.password
+    });
+
+    User.createUser(newUser, function(err, user){
+      if(err) throw err;
+      res.send(user).end()
+    });
+  } else{
+    res.status(500).send("Password Doesn't Match!").end()
+  }
+});
+
+
+/* Display login page */
+
+router.get('/login', function(req, res, next) {
+  res.render('login', { title: '.:: Login - Happy Jars ::.' });
+});
+
+/* Post Login data */
+
+router.post('/login',
+  passport.authenticate('local'),
+  function(req, res) {
+    res.send(req.user);
+  }
+);
+
+/* Logout! It is also important right? */
+
+router.get('/logout', function(req, res){
+	req.logout();
+	res.redirect("/auth/login")
+});
+
+
+
+module.exports = router;
